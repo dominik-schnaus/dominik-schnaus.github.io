@@ -1,33 +1,28 @@
 <!DOCTYPE html>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+    
+<script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG">
+</script>
+
 <html>
 <head>
   <meta charset="utf-8">
-  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
-  <!-- Replace the content tag with appropriate information -->
-  <meta name="description" content="DESCRIPTION META TAG">
-  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG"/>
-  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG"/>
-  <meta property="og:url" content="URL OF THE WEBSITE"/>
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/image/your_banner_image.png" />
-  <meta property="og:image:width" content="1200"/>
-  <meta property="og:image:height" content="630"/>
-
-
-  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
-  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
-  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
-  <meta name="twitter:card" content="summary_large_image">
   <!-- Keywords for your paper to be indexed by-->
-  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
+  <meta name="keywords" content="Vision-language models, Multimodal learning, Quadratic assignment problem, Representation learning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
   <title>It’s a (Blind) Match! Towards Vision-Language Correspondence without Parallel Data</title>
   <link rel="icon" type="image/x-icon" href="static/images/icon.png">
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-  rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/grandview" rel="stylesheet">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
@@ -43,6 +38,37 @@
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
+
+  <style type="text/css">
+  
+  
+    .slot-machine {
+        width: 100%;
+        height: 64px;
+        overflow: hidden;
+        position: relative;
+        /* background: linear-gradient(to bottom, #EEE 0%, #000 100%); */
+    }
+  
+    .reel {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        animation: spin 16s infinite linear;
+    }
+  
+    .icon {
+        height: 64px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+  
+    @keyframes spin {
+        0%, 49% { top: 0px; }       /* Pause on the first icon */
+        51%, 99% { top: -64px; }  /* Pause on the second icon */
+    }
+  </style>
 </head>
 <body>
 
@@ -52,34 +78,60 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">It’s a (Blind) Match! Towards Vision-Language Correspondence without Parallel Data</h1>
+            <!-- <img src="./static/videos/itsablindmatch_title.gif" width="33%"> -->
+            <video id="teaser" autoplay muted playsinline width="33%">
+              <source src="./static/videos/itsablindmatch_title.mov"
+                      type="video/mp4">
+              <source src="./static/videos/itsablindmatch_title.mp4"
+              type="video/mp4">
+            </video>
+            <h1 class="title is-1 publication-title">Towards Vision-Language Correspondence without Parallel Data</h1>
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
               <span class="author-block">
                 <a href="https://dominik-schnaus.github.io/" target="_blank">Dominik Schnaus</a>,</span>
                 <span class="author-block">
-                  <a href="https://arnike.github.io/" target="_blank">Nikita Araslanov</a>,</span>
+                  <a href="https://arnike.github.io/" target="_blank">Nikita Araslanov</a><sup>&dagger;</sup>,</span>
                   <span class="author-block">
-                    <a href="https://cvg.cit.tum.de/members/cremers" target="_blank">Daniel Cremers</a>
+                    <a href="https://cvg.cit.tum.de/members/cremers" target="_blank">Daniel Cremers</a><sup>&dagger;</sup>
                   </span>
                   </div>
 
                   <div class="is-size-5 publication-authors">
-                    <span class="author-block">Technical University of Munich (TUM), Munich Center of Machine Learning (MCML)<br>CVPR 2025</span>
+                    <span class="author-block"><sup>&dagger;</sup>equal advising<br>
+                      <!-- <div class="slot-machine">
+                          <div class="reel" id="reel">
+                              <div>TU Munich</div>
+                              <div class="icon"><img src="./static/images/tum_logo.png"></div>
+                          </div>
+                      </div> -->
+                      TU Munich, Munich Center of Machine Learning
+                      <br>CVPR 2025</span>
                   </div>
 
                   <div class="column has-text-centered">
                     <div class="publication-links">
                          <!-- Arxiv PDF link -->
                       <span class="link-block">
-                        <a
+                        <a href="https://arxiv.org/pdf/2503.24129"
                         class="external-link button is-normal is-rounded is-dark">
                         <span class="icon">
                           <i class="fas fa-file-pdf"></i>
                         </span>
-                        <span>Paper (coming soon)</span>
+                        <span>Paper</span>
                       </a>
                     </span>
+
+                    <!-- ArXiv abstract Link -->
+                    <span class="link-block">
+                      <a href="https://arxiv.org/abs/2503.24129"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="ai ai-arxiv"></i>
+                      </span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
 
                   <!-- Github link -->
                   <span class="link-block">
@@ -91,17 +143,6 @@
                     <span>Code (coming soon)</span>
                   </a>
                 </span>
-
-                <!-- ArXiv abstract Link -->
-                <span class="link-block">
-                  <a
-                  class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                    <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv (coming soon)</span>
-                </a>
-              </span>
             </div>
           </div>
         </div>
@@ -109,16 +150,6 @@
     </div>
   </div>
 </section>
-
-<!-- Teaser figure-->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <img src="static/images/teaser.png" alt="teaser"/>
-    </div>
-  </div>
-</section>
-<!-- End teaser figure -->
 
 <!-- Paper abstract -->
 <section class="section hero is-light">
@@ -128,7 +159,8 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            The platonic representation hypothesis suggests that vision and language embeddings become more homogeneous as model and dataset sizes increase. In particular, pairwise distances within each modality become more similar. This suggests that as foundation models mature, it may become possible to match vision and language embeddings in a fully unsupervised fashion, i.e., without parallel data. We present the first study towards this prospect, and investigate conformity of existing vision and language foundation models in the context of "blind" matching. First, we formulate unsupervised matching as a quadratic assignment problem and introduce a novel heuristic that outperforms previous solvers. We also develop a technique to find optimal matching problems, for which a non-trivial match is very likely. Second, we conduct an extensive study deploying a range of vision and language models on four datasets. Our analysis reveals that for many problem instances, vision and language representations can be indeed matched without supervision. This finding opens possibility for exciting applications embedding semantic knowledge into other modalities. As a showcase, we demonstrate a proof-of-concept unsupervised classifier, which achieves non-trivial classification accuracy without any image-text annotation.
+            The platonic representation hypothesis suggests that vision and language embeddings become more homogeneous as model and dataset sizes increase. In particular, pairwise distances within each modality become more similar. This suggests that as foundation models mature, <b>it may become possible to match vision and language embeddings in a fully unsupervised fashion</b>, i.e., without parallel data. We present the first study towards this prospect, and investigate conformity of existing vision and language foundation models in the context of "blind" matching. First, <b>we formulate unsupervised matching as a quadratic assignment problem</b> and <b>introduce a novel heuristic that outperforms previous solvers</b>. We also develop a technique to find optimal matching problems, for which a non-trivial match is very likely. Second, we conduct an <b>extensive study deploying a range of vision and language models on four datasets</b>. Our analysis reveals that for many problem instances, vision and language representations <b>can be indeed matched without supervision</b>. This finding opens possibility for exciting applications embedding semantic knowledge into other modalities. As a showcase, we demonstrate a proof-of-concept unsupervised classifier, which achieves non-trivial classification accuracy without any image-text annotation.
+            <!-- TODO: Highlight important words and format into sections -->
           </p>
         </div>
       </div>
@@ -136,6 +168,213 @@
   </div>
 </section>
 <!-- End paper abstract -->
+
+<!-- Teaser figure-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted controls playsinline width="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+<!-- End teaser figure -->
+
+
+<!-- Paper overview -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Overview</h2>
+    <div class="content has-text-justified">
+      <p>
+        Our approach explores <b>similarities</b> between representations for <b>vision and language models</b>. Given text and image representations of the same underlying objects, we try to <b>recover the pairing without supervision</b> (no supervised pre-training and no paired data). We also introduce a <b>new solver</b> that achieves the matching in a more scalable way. 
+        <br>
+        Overall, our contributions are:
+        <ul>
+          <li>The formulation of <b>vision-language matching as a quadratic assignment problem (QAP)</b></li>
+          <li>A specialized <b>memory-efficient QAP solver</b></li>
+          <li>A <b>large-scale study showing that non-trivial matches are possible</b></li>
+        </ul>
+
+      </p>
+    </div>
+  </div>
+</section>
+<!-- End paper overview -->
+
+
+<!-- Platonic representation hypothesis (+ link) without figure -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">The platonic representation hypothesis</h2>
+    <div class="content has-text-justified">
+      <p>
+        The main motivation for our approach comes from the <a href="https://phillipi.github.io/prh/">platonic representation hypothesis</a>. They showed that <b>pairwise similarities in self-supervised vision and language models become closer by scaling model and dataset size</b>. In our example, for both large language and vision models trained on enough data, the cat is closer to the dog than to the airplane in the embedding space. 
+      </p>
+    </div>
+  </div>
+</section>
+<!-- End platonic representation hypothesis -->
+
+<!-- Is matched data more similar? -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Is matched data more similar?</h2>
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="content">
+          <p class="content has-text-justified">
+            First, we investigate how the alignment measures change when the ground-truth pairing is distorted. That is, we shuffle a subset of the data points in one modality and compute the alignment. We consider the Mutual k-NN, centered kernel alignment (CKA), and the Gromov-Wasserstein distance on several classification and image/caption datasets. We observe that <b>the average alignment decreases strictly monotonically so that the ground-truth pairing achieves the optimal alignment</b>. This motivates that these similarity measures are practical heuristics for finding a matching.
+            <br>
+            Interestingly, we observed the same qualitative behavior for randomly initialized vision and language networks. We analyze and discuss this in more detail in Appendix C of our paper.
+          </p>
+        </div>
+      </div>
+      <div class="column">
+        <div class="columns is-centered">
+          <div class="column content">
+            <img src="static/images/alignment.png" alt="alignment"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blind matching. -->
+<section class="section">
+  <div class="container is-max-desktop">
+  <h2 class="title is-3">Blind matching</h2>
+    <div class="content">
+      <p class="content has-text-justified">
+        Since the alignment tends to be better for correctly paired representations, we <b>formulate the matching as an optimization problem</b>, where we search for the optimal permutation matrix $\mathbf{P}^*$ such that the alignment $l(\mathbf{X}_{ik}, \mathbf{Y}_{jl})$ is maximal (or the distance is minimal for the Gromov-Wasserstein distance):
+        \(
+          \DeclareMathOperator*{\argmin}{arg\,min}
+          \DeclareMathOperator*{\argmax}{arg\,max}
+        \)
+        $$
+          \mathbf{P}^* \in \argmin_{\mathbf{P} \in \mathcal{P}_N} \quad \sum_{i, j, k, l = 1}^{N} l\left(\mathbf{X}_{i k}, \mathbf{Y}_{j l}\right) \mathbf{P}_{i j} \mathbf{P}_{k l}
+        $$
+        $$
+          \mathcal{P}_N = \{\mathbf{P} \mid \mathbf{P} \in \{0, 1\}^{N \times N}, \mathbf{P} \mathbf{1} = \mathbf{1}, \mathbf{P}^T \mathbf{1} = \mathbf{1}\}.
+        $$
+        Here, $\mathbf{X}_{ik}$ is the similarity of the i-th and k-th vision embeddings and accordingly $\mathbf{Y}$ is the pairwise similarity matrix in the language space. Subject to a specific instantiation of  $l(\cdot, \cdot)$, this formulation is general and can accommodate many existing distance (and similarity) measures. This problem is a quadratic assignment problem (QAP), which is in general NP-hard. Existing solvers already fail for $N \geq 30$, meaning that a 30-class problem cannot be solved.
+        <br>
+        We extend the <b>Hahn-Grant</b> heuristic to solve the QAP with the following <b>key extensions</b>:
+        <ul>
+          <li>A <b>primal heuristic</b> to find primal solutions</li>
+          <li>Improved <b>memory complexity</b> from $O(N^4)$ to $O(N^3)$</li>
+          <li><b>Faster</b> linear assignment solver.</li>
+        </ul>
+        With this solver, we find better primal solutions with tighter bounds also for larger problem sizes (optimal up to $N = 40$).
+      </p>
+      <center>
+        <video autoplay muted controls loop playsinline width="100%">
+          <source src="./static/videos/matching.mov"
+                  type="video/mp4">
+          <source src="./static/videos/matching.mp4"
+                  type="video/mp4">
+        </video>
+      </center>
+    </div>
+  </div>
+</section>
+  <!--/ End blind matching. -->
+
+<!-- Experiments. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Experiments</h2>
+    <p class="content has-text-justified">
+      We evaluate how many classes can be matched correctly (=matching accuracy) in the small-scale ($N=10$) and larger-scale ($10 \leq N \leq 100$) setting.
+    </p>
+    <h2 class="title is-4">Small-scale matching</h2>
+    <div class="content">
+      <p class="content has-text-justified">
+        We evaluate a total of 33 vision models and 27 language models on CIFAR-10 and CINIC-10 (we keep the image resolution from ImageNet). We observe that <b>most models perform better than 10% accuracy</b>, which is the baseline for random permutations. Furthermore, pre-training seems to be more important than model size.
+        <br>
+        We also find that the Gromov-Wasserstein distance is more useful for matching than Mutual k-NN and CKA.
+      </p>
+      <center>
+        <img src="static/images/small_scale.png" alt="small-scale" width="85%"/>
+      </center>
+    </div>
+  </div>
+  <div class="container is-max-desktop">
+    <h2 class="title is-4">Larger-scale matching</h2>
+    <div class="content">
+      <p class="content has-text-justified">
+        We find that some classes are represented very differently in vision and language models. Therefore, we introduce a method to find subsets of classes that can be matched well. To do this, we optimize for a subset $\mathbf{s}^*$ of classes such that their alignment (=how similar their pairwise similarities are) is maximized:
+        $$
+          \mathbf{s}^* \in \argmax_{\mathbf{s}} \sum_{i, j = 1}^{N} l\left(\mathbf{X}_{i j}, \mathbf{Y}_{i j}\right) \mathbf{s}_{i} \mathbf{s}_{j}
+        $$
+        $$
+          \text{s.t.}\quad \mathbf{s} \in \{0, 1\}^{L} \:\:\text{and}\:\: \mathbf{s}^T \mathbf{1} = N.
+        $$
+        We evaluate the models on ImageNet-100 and CIFAR-100. We observe that <b>all models have high accuracy for small problem sizes</b>, and that performance drops for larger problem sizes. Thus, some classes are represented similarly and other classes disrupt the matching leading to the steep drop in accuracy. In general, CLIP performs better than DeiT and DINOv2 and on CIFAR-100, DINOv2 performs much worse than the other models. We suspect that some fine-grained classes are represented differently by vision and language models, but explicit language supervision during training may help to align them.
+      </p>
+      <div class="columns is-centered">
+        <div class="column content">
+          <img src="static/images/large_scale_imagenet.png" alt="small-scale" width="100%"/>
+        </div>
+        <div class="column content">
+          <img src="static/images/large_scale_cifar.png" alt="small-scale" width="100%"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ End experiments. -->
+
+<!-- Unsupervised classifiers. -->
+<section class="section">
+  <div class="container is-max-desktop">
+  <h2 class="title is-3">Application: Unsupervised classifiers</h2>
+    <p class="content has-text-justified">
+      Using our matching algorithm, we can find pairings between a set of vision and language embeddings that represent the same objects. We can combine this with any clustering algorithm to build unsupervised classifiers.
+      <br>
+      Given a classification dataset, we have a set of $N$ classes and for each class a couple of images. We apply a language model to embed each of the classes and cluster the images into $N$ clusters. Finally, we use our matching algorithm to find the correspondence between cluster centers and language embeddings. This returns an assignment of clusters to classes which can be propagated back to each sample in that class.
+      <br>
+      We achieve non-trivial accuracies for all vision and language models considered and a top accuracy of 51.5% for DINOv2 with All-Roberta-large-v1. While this is far from the supervised state-of-the-art, <b>this is the first instance of fully unsupervised image classification</b>.
+    </p>
+    <video autoplay muted controls loop playsinline width="100%">
+      <source src="./static/videos/unsupervised_classification.mov"
+              type="video/mp4">
+      <source src="./static/videos/unsupervised_classification.mp4"
+              type="video/mp4">
+    </video>
+  </div>
+</section>
+<!--/ End unsupervised classifiers. -->
+
+<!-- Discussion -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Discussion</h2>
+    <div class="content has-text-justified">
+      <h2 class="title is-4">Can we match vision and language without paired data?</h2>
+      <ul>
+        <li>Many classes can be matched without supervision.</li>
+        <li>Some classes have different representations in vision and language, hence cannot be matched.</li>
+      </ul>
+      <h2 class="title is-4">Can we match arbitrary embeddings?</h2>
+      <ul>
+        <li>Not every embedding can be matched with existing models.</li>
+        <li>Some concepts appear only in one modality, e.g. “freedom of speech”. Thus, explicit supervision is required.</li>
+        <li>Our method is not scalable to very large problems ($N \gg 100$).</li>
+        <!--N >> 100-->
+      </ul>
+      <h2 class="title is-4">Which vision model can be matched best?</h2>
+      <ul>
+        <li>DINOv2 is better on broad concepts.</li>
+        <li>CLIP and DeiT encode fine-grained objects more consistently.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- End discussion -->
 
 <!--BibTex citation -->
   <section class="section" id="BibTeX">
