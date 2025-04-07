@@ -20,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
-  <title>It’s a (Blind) Match! Towards Vision-Language Correspondence without Parallel Data</title>
+  <title>It's a (Blind) Match! Towards Vision-Language Correspondence without Parallel Data</title>
   <link rel="icon" type="image/x-icon" href="static/images/icon.png">
   <link href="https://fonts.cdnfonts.com/css/grandview" rel="stylesheet">
 
@@ -38,37 +38,6 @@
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
-
-  <style type="text/css">
-  
-  
-    .slot-machine {
-        width: 100%;
-        height: 64px;
-        overflow: hidden;
-        position: relative;
-        /* background: linear-gradient(to bottom, #EEE 0%, #000 100%); */
-    }
-  
-    .reel {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        animation: spin 16s infinite linear;
-    }
-  
-    .icon {
-        height: 64px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-  
-    @keyframes spin {
-        0%, 49% { top: 0px; }       /* Pause on the first icon */
-        51%, 99% { top: -64px; }  /* Pause on the second icon */
-    }
-  </style>
 </head>
 <body>
 
@@ -79,7 +48,7 @@
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <!-- <img src="./static/videos/itsablindmatch_title.gif" width="33%"> -->
-            <video id="teaser" autoplay muted playsinline width="33%">
+            <video id="title" autoplay muted playsinline width="33%">
               <source src="./static/videos/itsablindmatch_title.mov"
                       type="video/mp4">
               <source src="./static/videos/itsablindmatch_title.mp4"
@@ -135,12 +104,12 @@
 
                   <!-- Github link -->
                   <span class="link-block">
-                    <a
+                    <a href="https://github.com/dominik-schnaus/itsamatch"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
                     </span>
-                    <span>Code (coming soon)</span>
+                    <span>Code</span>
                   </a>
                 </span>
             </div>
@@ -160,7 +129,6 @@
         <div class="content has-text-justified">
           <p>
             The platonic representation hypothesis suggests that vision and language embeddings become more homogeneous as model and dataset sizes increase. In particular, pairwise distances within each modality become more similar. This suggests that as foundation models mature, <b>it may become possible to match vision and language embeddings in a fully unsupervised fashion</b>, i.e., without parallel data. We present the first study towards this prospect, and investigate conformity of existing vision and language foundation models in the context of "blind" matching. First, <b>we formulate unsupervised matching as a quadratic assignment problem</b> and <b>introduce a novel heuristic that outperforms previous solvers</b>. We also develop a technique to find optimal matching problems, for which a non-trivial match is very likely. Second, we conduct an <b>extensive study deploying a range of vision and language models on four datasets</b>. Our analysis reveals that for many problem instances, vision and language representations <b>can be indeed matched without supervision</b>. This finding opens possibility for exciting applications embedding semantic knowledge into other modalities. As a showcase, we demonstrate a proof-of-concept unsupervised classifier, which achieves non-trivial classification accuracy without any image-text annotation.
-            <!-- TODO: Highlight important words and format into sections -->
           </p>
         </div>
       </div>
@@ -173,8 +141,10 @@
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
-      <video id="teaser" autoplay muted controls playsinline width="100%">
+      <video id="teaser" autoplay muted controls loop playsinline width="100%">
         <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+        <source src="./static/videos/teaser.mov"
                 type="video/mp4">
       </video>
     </div>
@@ -189,13 +159,13 @@
     <h2 class="title is-3">Overview</h2>
     <div class="content has-text-justified">
       <p>
-        Our approach explores <b>similarities</b> between representations for <b>vision and language models</b>. Given text and image representations of the same underlying objects, we try to <b>recover the pairing without supervision</b> (no supervised pre-training and no paired data). We also introduce a <b>new solver</b> that achieves the matching in a more scalable way. 
+        <b>Vision-Language models need a lot of paired training data. Can we match vision and language without any supervision? Our work shows that it could be indeed feasible.</b>
         <br>
         Overall, our contributions are:
         <ul>
           <li>The formulation of <b>vision-language matching as a quadratic assignment problem (QAP)</b></li>
           <li>A specialized <b>memory-efficient QAP solver</b></li>
-          <li>A <b>large-scale study showing that non-trivial matches are possible</b></li>
+          <li>An <b>extensive study</b> showing the feasibility of non-trivial vision-language matching without any parallel data</li>
         </ul>
 
       </p>
@@ -211,7 +181,7 @@
     <h2 class="title is-3">The platonic representation hypothesis</h2>
     <div class="content has-text-justified">
       <p>
-        The main motivation for our approach comes from the <a href="https://phillipi.github.io/prh/">platonic representation hypothesis</a>. They showed that <b>pairwise similarities in self-supervised vision and language models become closer by scaling model and dataset size</b>. In our example, for both large language and vision models trained on enough data, the cat is closer to the dog than to the airplane in the embedding space. 
+        The main motivation for our approach comes from the <a href="https://phillipi.github.io/prh/">platonic representation hypothesis</a>. The hypothesis postulates that <b>pairwise similarities in self-supervised vision and language models become closer by scaling model and dataset size</b>. In our example, for both large language and vision models trained on enough data, the cat is closer to the dog than to the airplane in the embedding space. 
       </p>
     </div>
   </div>
@@ -226,7 +196,7 @@
       <div class="column">
         <div class="content">
           <p class="content has-text-justified">
-            First, we investigate how the alignment measures change when the ground-truth pairing is distorted. That is, we shuffle a subset of the data points in one modality and compute the alignment. We consider the Mutual k-NN, centered kernel alignment (CKA), and the Gromov-Wasserstein distance on several classification and image/caption datasets. We observe that <b>the average alignment decreases strictly monotonically so that the ground-truth pairing achieves the optimal alignment</b>. This motivates that these similarity measures are practical heuristics for finding a matching.
+            First, we investigate how the alignment measures change when the ground-truth pairing is distorted. That is, we shuffle a subset of the data points in one modality and compute the alignment. We consider the Mutual k-NN, centered kernel alignment (CKA), and the Gromov-Wasserstein distance on several classification and image/caption datasets. We observe that <b>the average alignment decreases strictly monotonically so that the ground-truth pairing achieves the optimal alignment</b>. This shows that these similarity measures are practical heuristics for finding a matching.
             <br>
             Interestingly, we observed the same qualitative behavior for randomly initialized vision and language networks. We analyze and discuss this in more detail in Appendix C of our paper.
           </p>
@@ -363,7 +333,7 @@
       <ul>
         <li>Not every embedding can be matched with existing models.</li>
         <li>Some concepts appear only in one modality, e.g. “freedom of speech”. Thus, explicit supervision is required.</li>
-        <li>Our method is not scalable to very large problems ($N \gg 100$).</li>
+        <li>The blind matching does not scale to very large problems yet ($N \gg 100$).</li>
         <!--N >> 100-->
       </ul>
       <h2 class="title is-4">Which vision model can be matched best?</h2>
