@@ -263,7 +263,7 @@
     <h2 class="title is-4">Small-scale matching</h2>
     <div class="content">
       <p class="content has-text-justified">
-        We evaluate a total of 33 vision models and 27 language models on CIFAR-10 and CINIC-10 (we keep the image resolution from ImageNet). We observe that <b>most models perform better than 10% accuracy</b>, which is the baseline for random permutations. Furthermore, pre-training seems to be more important than model size.
+        We evaluate a total of 32 vision models and 27 language models on CIFAR-10 and CINIC-10 (we keep the image resolution from ImageNet). We observe that <b>most models perform better than 10% accuracy</b>, which is the baseline for random permutations. Furthermore, pre-training seems to be more important than model size.
         <br>
         We also find that the Gromov-Wasserstein distance is more useful for matching than Mutual k-NN and CKA.
       </p>
@@ -307,7 +307,7 @@
       <br>
       Given a classification dataset, we have a set of $N$ classes and for each class a couple of images. We apply a language model to embed each of the classes and cluster the images into $N$ clusters. Finally, we use our matching algorithm to find the correspondence between cluster centers and language embeddings. This returns an assignment of clusters to classes which can be propagated back to each sample in that class.
       <br>
-      We achieve non-trivial accuracies for all vision and language models considered and a top accuracy of 51.5% for DINOv2 with All-Roberta-large-v1. While this is far from the supervised state-of-the-art, <b>this is the first instance of fully unsupervised image classification</b>.
+      We achieve non-trivial accuracies for all vision and language models considered and a top accuracy of 51.1% for DINOv2 with All-Roberta-large-v1. While this is far from the supervised state-of-the-art, <b>this is the first instance of fully unsupervised image classification</b>.
     </p>
     <video autoplay muted controls loop playsinline width="100%">
       <source src="./static/videos/unsupervised_classification.mov"
