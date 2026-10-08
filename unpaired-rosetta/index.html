@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shared Geometry as a Rosetta Stone</title>
+<meta name="description" content="Cross-modal alignment without paired data: one global orthogonal map between vision and language embeddings, recovered from their shared geometry alone.">
+<meta property="og:title" content="Shared Geometry as a Rosetta Stone">
+<meta property="og:description" content="Cross-modal alignment without paired data.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#001c32">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M9 3h13l6 6v20H4V8z' fill='%23001c32'/%3E%3Cpath d='M9 12h14M9 17h14M9 22h10' stroke='%2300ebb5' stroke-width='1.8'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/work-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="data/manifest.json" as="fetch" crossorigin>
+<link rel="stylesheet" href="css/site.css">
+<script>try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}</script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body data-chapter="title">
+
+<!-- The atlas: one full-screen point cloud, always there and always interactive. Chapters only change what it
+     shows; their text and controls live in the panel (a side panel on wide screens, a bottom sheet on phones). -->
+<canvas id="stage" aria-hidden="true"></canvas>
+<canvas id="overlay" aria-hidden="true"></canvas>
+<div id="plot-hit" aria-label="Point cloud: drag to move, pinch or scroll to zoom, tap or hover a point to inspect it"></div>
+<div id="callouts" aria-hidden="true"></div>
+<div id="bench-stage" class="stage-figure bench-stage" aria-label="FOSCTTM of our method and of specialized methods on three benchmarks"></div>
+<div id="domain-plot" class="stage-figure" role="img" aria-label="FOSCTTM against CKA for fourteen pairs of modalities"></div>
+<div class="hud-stage" id="hud-stage" aria-live="polite"></div>
+<div class="legend" id="legend" aria-hidden="true"></div>
+<div class="legend measure" id="legend-measure" aria-hidden="true"></div>
+<button class="metric" id="metric" type="button" data-open="foscttm"><span>FOSCTTM</span><b id="metric-value">…</b><small id="metric-sub"></small></button>
+<button class="fit-view" id="fit-view" type="button" hidden>Reset view</button>
+
+<header id="topbar">
+  <button type="button" class="brand" id="home" aria-label="Back to the title">Shared Geometry as a Rosetta Stone</button>
+  <nav class="top-links" aria-label="Paper links">
+    <a href="https://arxiv.org/pdf/2610.09411" target="_blank" rel="noopener">Paper</a>
+    <a href="https://github.com/dominik-schnaus/unpaired-rosetta" target="_blank" rel="noopener">Code</a>
+    <button type="button" data-open="cite">Cite</button>
+    <button type="button" class="theme-btn" aria-label="Switch between light and dark"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path class="fill" d="M10 3.5a6.5 6.5 0 0 0 0 13z"/></svg></button>
+  </nav>
+</header>
+
+<!-- ============================================================ TITLE: the stone, whose images and words react to the pointer -->
+<section id="hero" aria-label="Title">
+  <div class="hero-grid">
+    <header class="hero-text">
+      <h1 class="title carve" data-carve="instant">Shared Geometry<br>as a Rosetta Stone</h1>
+      <p class="subtitle">Cross-Modal Alignment Without Paired Data</p>
+      <ul class="authors">
+        <li><a href="https://dominik-schnaus.github.io/" target="_blank" rel="noopener">Dominik Schnaus</a><sup>1,2</sup></li>
+        <li><a href="https://tommoo.github.io/" target="_blank" rel="noopener">Thomas Dagès</a><sup>1,2</sup></li>
+        <li><a href="https://cvg.cit.tum.de/members/cremers" target="_blank" rel="noopener">Daniel Cremers</a><sup>1,2†</sup></li>
+        <li><a href="https://xiwang1212.github.io/homepage/" target="_blank" rel="noopener">Xi Wang</a><sup>1,2,3,4†</sup></li>
+        <li><a href="https://web.mit.edu/phillipi/" target="_blank" rel="noopener">Phillip Isola</a><sup>5†</sup></li>
+      </ul>
+      <p class="affiliations"><sup>1</sup>TU Munich <sup>2</sup>MCML <sup>3</sup>Ulm University <sup>4</sup>ETH Zurich <sup>5</sup>MIT <span class="equal"><sup>†</sup>Equal advising</span></p>
+      <!-- the logos are masks in the text colour, so one file serves the light and the dark page -->
+      <ul class="logos" aria-label="Affiliations">
+        <li><a class="logo tum" href="https://www.tum.de/en/" target="_blank" rel="noopener" aria-label="TU Munich"></a></li>
+        <li><a class="logo mcml" href="https://mcml.ai/" target="_blank" rel="noopener" aria-label="Munich Center for Machine Learning"></a></li>
+        <li><a class="logo ulm" href="https://www.uni-ulm.de/en/" target="_blank" rel="noopener" aria-label="Ulm University"></a></li>
+        <li><a class="logo eth" href="https://ethz.ch/en.html" target="_blank" rel="noopener" aria-label="ETH Zurich"></a></li>
+        <li><a class="logo mit" href="https://www.mit.edu/" target="_blank" rel="noopener" aria-label="MIT"></a></li>
+      </ul>
+      <nav class="links" aria-label="Paper links">
+        <a class="btn" href="https://arxiv.org/pdf/2610.09411" target="_blank" rel="noopener">Paper</a>
+        <a class="btn" href="https://arxiv.org/abs/2610.09411" target="_blank" rel="noopener">arXiv</a>
+        <a class="btn" href="https://github.com/dominik-schnaus/unpaired-rosetta" target="_blank" rel="noopener">Code</a>
+        <button class="btn" type="button" data-open="cite">Cite</button>
+      </nav>
+      <button type="button" class="enter" id="enter">Explore the aligned space</button>
+    </header>
+    <div class="stone-wrap" id="stone-wrap">
+      <div class="blob" aria-hidden="true"></div>
+      <svg class="stone" viewBox="0 0 400 516" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <filter id="grain" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="n"/>
+            <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .07 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
+          </filter>
+          <linearGradient id="stoneShade" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#5a564f"/><stop offset="1" stop-color="#3d3a35"/>
+          </linearGradient>
+        </defs>
+        <path class="stone-body" d="M251 4 L298 5 L305 19 L318 27 L336 104 L344 128 L359 149 L390 221 L390 302 L394 315 L396 386 L377 402 L375 409 L342 444 L324 454 L309 468 L295 476 L284 479 L273 486 L255 492 L234 492 L201 499 L177 498 L172 501 L166 500 L154 505 L151 500 L137 503 L125 498 L108 500 L80 512 L61 508 L49 509 L21 498 L11 498 L9 494 L17 481 L6 474 L4 464 L5 410 L9 384 L6 342 L11 305 L12 274 L16 270 L14 254 L15 186 L18 170 L16 166 L18 154 L18 131 L21 117 L40 108 L50 97 L95 61 L101 59 L132 40 L138 40 L153 30 L160 31 L161 28 L207 12 L230 7 L235 10 Z" fill="url(#stoneShade)"/>
+        <path d="M251 4 L298 5 L305 19 L318 27 L336 104 L344 128 L359 149 L390 221 L390 302 L394 315 L396 386 L377 402 L375 409 L342 444 L324 454 L309 468 L295 476 L284 479 L273 486 L255 492 L234 492 L201 499 L177 498 L172 501 L166 500 L154 505 L151 500 L137 503 L125 498 L108 500 L80 512 L61 508 L49 509 L21 498 L11 498 L9 494 L17 481 L6 474 L4 464 L5 410 L9 384 L6 342 L11 305 L12 274 L16 270 L14 254 L15 186 L18 170 L16 166 L18 154 L18 131 L21 117 L40 108 L50 97 L95 61 L101 59 L132 40 L138 40 L153 30 L160 31 L161 28 L207 12 L230 7 L235 10 Z" fill="#fff" filter="url(#grain)"/>
+        <path class="stone-edge" d="M18 131 L21 117 L40 108 L50 97 L95 61 L101 59 L132 40 L138 40 L153 30 L160 31 L161 28 L207 12 L230 7 L235 10 L251 4 L298 5" fill="none"/>
+        <path class="stone-split" d="M12 290 C110 294 220 285 300 292 C340 295 370 289 390 291" fill="none"/>
+      </svg>
+      <div class="stone-labels"><span class="lab-text">caption words</span><span class="lab-images">images</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ THE PANEL: chapters, their text and their controls -->
+<aside id="panel" aria-label="Chapters">
+  <div class="grab" data-grab>
+    <div class="handle" aria-hidden="true"></div>
+    <nav id="chapters" class="chips" aria-label="Chapters">
+      <button type="button" data-go="overview">Overview</button>
+      <button type="button" data-go="method">Our method</button>
+      <button type="button" data-go="results">Results</button>
+      <button type="button" data-go="pairs">Few pairs</button>
+      <button type="button" data-go="t2i">Text to image</button>
+      <button type="button" data-go="geometry">When it works</button>
+      <button type="button" data-go="domains">Other modalities</button>
+      <button type="button" data-go="benchmarks">Specialized methods</button>
+    </nav>
+  </div>
+  <div class="panel-body" id="panel-body">
+    <div id="inspector" hidden><button type="button" class="close" aria-label="Close">&times;</button><div class="ins-body"></div></div>
+
+    <!-- ------------------------------------------------------------ method -->
+    <article data-chapter="overview">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">Overview</h2>
+        <p class="subhead">Aligning Two Embedding Spaces Without Pairs</p>
+      </header>
+      <div class="tools"><button type="button" class="tool" data-replay>Replay</button></div>
+      <p>We show that models trained independently in different modalities (e.g., image and text models) are similar enough that they can be coarsely aligned without pairs using <strong class="key">a single, orthogonal map</strong>. This is challenging because the models have no shared coordinates or known correspondences and potentially have different numbers of samples and dimensions. Our method uses that coarse distances are often similar in both modalities.</p>
+      <p class="note">The plot shows 1,000 images and 1,000 captions from two separate halves of MS&nbsp;COCO. At the start, the images (circles) and the captions (triangles) lie in their own spaces. The animation then applies the learned map, and the colours show that each image ends up near captions about the same kind of content.</p>
+      <h3>Main findings</h3>
+      <ul class="findings">
+        <li>Vision and language models can be aligned without pairs, even across different datasets.</li>
+        <li>When few pairs (≤1000) are available, our method outperforms existing few-pair methods by a large margin.</li>
+        <li><button class="inline-term" data-open="cka">CKA</button> predicts how well the unpaired alignment works, also for scientific and medical modalities.</li>
+        <li>Our generic method is competitive with or better than other domain-specific methods on their respective unpaired benchmarks.</li>
+      </ul>
+      <p class="inscription">Models trained independently in different modalities can often be coarsely aligned.</p>
+      <button type="button" class="continue" data-go="method">Continue with the method</button>
+    </article>
+
+    <article data-chapter="method">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">Our Method</h2>
+        <p class="subhead">Wasserstein Procrustes + Geometric Initialization</p>
+      </header>
+      <div class="tools">
+        <div class="seg" role="tablist" aria-label="Steps of the method">
+          <button type="button" role="tab" data-step="0">Two spaces</button>
+          <button type="button" role="tab" data-step="1">Clustering</button>
+          <button type="button" role="tab" data-step="2">Read-out</button>
+          <button type="button" role="tab" data-step="3">Refinement</button>
+        </div>
+        <button type="button" class="tool play" data-play>Play the method</button>
+        <button type="button" class="tool" data-replay>Replay</button>
+      </div>
+      <div class="step-text" data-step="0">
+        <p>We take images from one half of the dataset and captions from the other half, so no image is paired with its original caption. We embed them with independently trained vision and language models. Our method then learns <strong class="key">one global orthogonal map</strong>, a single matrix that moves every image embedding into the caption space.</p>
+        <p class="note">Circles are image embeddings from DINOv2 B/14, and triangles are caption embeddings from Qwen3-8B. The two sets come from separate, non-overlapping subsets of MS&nbsp;COCO, and they start out in different spaces with different numbers of dimensions. There is no known correspondence between the dimensions of the two spaces or between the samples in the two sets. Hover over or tap any point to see its image or caption.</p>
+      </div>
+      <div class="step-text" data-step="1">
+        <h3>Geometric initialization</h3>
+        <p>We cluster the images and the captions separately. We then match the image clusters to the caption clusters so that the similarities between cluster centers agree as well as possible, which is a small quadratic assignment problem. Repeating this matching on random batches and averaging the results gives a coarse correspondence between the two sets.</p>
+        <p class="note">The plot shows 8 clusters. The method uses 30 clusters and 30 repetitions.</p>
+      </div>
+      <div class="step-text" data-step="2">
+        <h3>Read-out</h3>
+        <p>We turn the coarse correspondence into a one-to-one matching between individual images and captions. The matching is one optimization step on the <button class="inline-term" data-open="gw">Gromov-Wasserstein</button> objective. <button class="inline-term" data-open="procrustes">Orthogonal Procrustes</button> then finds the one orthogonal matrix that best fits all matched pairs at once.</p>
+        <p class="stat"><span>Validation <button class="inline-term" data-open="foscttm">FOSCTTM</button> after the read-out</span><b data-fill="stage.readout">…</b></p>
+      </div>
+      <div class="step-text" data-step="3">
+        <h3>Refinement</h3>
+        <p>We alternate between updating the correspondence between images and captions with <button class="inline-term" data-open="hungarian">Hungarian matching</button> and updating the map with <button class="inline-term" data-open="procrustes">orthogonal Procrustes</button>. The map stays a single orthogonal matrix that is shared by all samples.</p>
+        <p class="stat"><span>Validation <button class="inline-term" data-open="foscttm">FOSCTTM</button> after the refinement</span><b data-fill="stage.refined">…</b></p>
+        <p class="inscription">Our Wasserstein Procrustes method with geometric initialization finds one global map between image and caption embeddings without any pairs.</p>
+      </div>
+      <button type="button" class="continue" data-go="results">Continue with the results</button>
+    </article>
+
+    <!-- ------------------------------------------------------------ results -->
+    <article data-chapter="results">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">Results</h2>
+        <p class="subhead">Unpaired Cross-Modal Alignment Is Possible</p>
+      </header>
+      <div class="tools"><button type="button" class="tool" data-replay>Replay</button></div>
+      <div class="controls">
+        <label>Vision <select id="sel-vision"></select></label>
+        <label>Language <select id="sel-language"></select></label>
+        <label>Dataset <select id="sel-dataset"></select></label>
+      </div>
+      <p class="note">Explore 1,000 image and caption pairs from the MS&nbsp;COCO validation set, which the method never sees during training. Every point is moved by the same orthogonal map. Hover over or tap a point to see its three closest matches and its true image or caption. The label on the line gives the fraction of captions that are closer to the image than its true caption. <button class="inline-term" data-open="foscttm">FOSCTTM</button> is the average of this fraction, where 0 means perfect alignment and 0.5 means chance. The option MS&nbsp;COCO&nbsp;→&nbsp;SPC uses images from MS&nbsp;COCO and captions from SPC. The map shown is the median of 5 random seeds.</p>
+      <div class="chart" id="hist"></div>
+      <p><strong class="key">Image and text embeddings from independently trained models often share enough structure to be aligned coarsely without any image-caption pairs.</strong> The alignment works for many model combinations, and it works even when the images and captions come from different datasets. Its quality varies with the model combination and the caption style. For example, Qwen3 gen stays close to chance on the long, detailed captions of SPC, DCI, and DOCCI, and we analyze this difference further in the paper.</p>
+      <p class="inscription">Image and text embeddings are similar enough for a coarse alignment without pairs, even across different datasets.</p>
+      <button type="button" class="continue" data-go="pairs">Continue with few pairs</button>
+    </article>
+
+    <!-- ------------------------------------------------------------ few pairs -->
+    <article data-chapter="pairs">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">Few-Pair Alignment</h2>
+        <p class="subhead">Shared Geometry Replaces Hundreds of Pairs</p>
+      </header>
+      <div class="tools"><button type="button" class="tool" data-replay>Replay</button></div>
+      <div class="controls">
+        <label class="slider"><span>Number of known pairs <b id="pairs-value">0</b></span><input id="pairs-slider" type="range" min="0" max="10" step="1" value="0"></label>
+      </div>
+      <div class="chart" id="pairs-spark"></div>
+      <p class="note">Use the slider to add known image-caption pairs and see how they change the alignment. In the plot, each known pair is an outlined image and its caption, joined by a line. The known pairs come from MS&nbsp;COCO, while the two embedding sets are still taken from separate, non-overlapping subsets of the dataset. Our method uses these pairs in each of its three steps. The plot shows the same unseen MS&nbsp;COCO validation set as before.</p>
+      <p>With 20 or fewer known pairs, our <button class="inline-term" data-open="foscttm">FOSCTTM</button> is 14 to 28 times lower than the best of seven methods that learn from pairs. Six of these methods need 100 to 500 pairs to reach the <button class="inline-term" data-open="foscttm">FOSCTTM</button> that our method reaches with no pairs at all, and SUE never reaches it.</p>
+      <p class="inscription">Shared structure also improves the alignment when some pairs are available.</p>
+      <button type="button" class="continue" data-go="t2i">Continue with text to image</button>
+    </article>
+
+    <!-- ------------------------------------------------------------ text to image -->
+    <article data-chapter="t2i">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">Generating Images From Captions</h2>
+        <p class="subhead">The Map Made Visible</p>
+      </header>
+      <div class="tools"><button type="button" class="tool" data-replay>Replay</button></div>
+      <div class="controls">
+        <div class="stepper" aria-label="Caption">
+          <button type="button" id="cap-prev" aria-label="Previous caption">&lsaquo;</button>
+          <span id="cap-text"></span>
+          <button type="button" id="cap-next" aria-label="Next caption">&rsaquo;</button>
+        </div>
+        <label class="slider"><span>Number of known pairs <b id="t2i-value">0</b></span><input id="t2i-slider" type="range" min="0" max="7" step="1" value="0"></label>
+      </div>
+      <p class="note">We use image generation to make the alignment visible. We embed a caption with the MPNet language model, and our map moves this embedding into the image space of DINOv2 B/14. A small <button class="inline-term" data-open="rae">RAE diffusion model</button>, which was trained only on ImageNet images and never on captions, then generates an image from the mapped embedding. The caption can therefore only influence the image through our map. The goal is to show what the map preserves, and not to compete with text-to-image models that are trained on millions of image-caption pairs.</p>
+      <p>Without any pairs, the generated images already show a reasonable scene, but they often miss fine details. Adding a few known pairs sharpens individual objects and scene attributes.</p>
+      <button type="button" class="continue" data-go="geometry">Continue with when it works</button>
+    </article>
+
+    <!-- ------------------------------------------------------------ CKA -->
+    <article data-chapter="geometry">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">When Does Unpaired Alignment Work?</h2>
+        <p class="subhead">Shared Geometry Predicts Alignment</p>
+      </header>
+      <div class="tools"><button type="button" class="tool" data-replay>Replay</button></div>
+      <div class="controls">
+        <label class="slider"><span>CKA <b id="cka-value">…</b></span><input id="cka-slider" type="range" min="0" max="83" step="1" value="0"></label>
+        <p class="combo-name" id="cka-combo"></p>
+      </div>
+      <div class="chart tall" id="cka-scatter"></div>
+      <p class="note">The slider goes through all 84 combinations of vision model, language model, and dataset, sorted by their <button class="inline-term" data-open="cka">CKA</button>. <button class="inline-term" data-open="cka">CKA</button> measures how similarly the two spaces arrange the same samples. It needs paired data, which we use only for this analysis. The thin lines connect 80 images to their true captions. For combinations with a low <button class="inline-term" data-open="cka">CKA</button> many lines are long, and for combinations with a high <button class="inline-term" data-open="cka">CKA</button> most lines are short. You can also click a point in the chart.</p>
+      <p>Unpaired alignment works best when the two spaces arrange the samples in a similar way. Across all model combinations, <button class="inline-term" data-open="cka">CKA</button> explains 73% of the variation in alignment quality (<button class="inline-term" data-open="r2"><i>R</i><sup>2</sup></button>&nbsp;=&nbsp;0.73), with a <button class="inline-term" data-open="spearman">Spearman correlation</button> of <i>ρ</i>&nbsp;=&nbsp;&minus;0.90. So <button class="inline-term" data-open="cka">CKA</button>, measured on a small set of paired examples, can estimate whether unpaired alignment is likely to work well.</p>
+      <p class="inscription">The <button class="inline-term" data-open="cka">CKA</button> between the two spaces predicts how well unpaired alignment works.</p>
+      <button type="button" class="continue" data-go="domains">Continue with other modalities</button>
+    </article>
+
+    <!-- ------------------------------------------------------------ other domains -->
+    <article data-chapter="domains">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">Other Pairs of Modalities</h2>
+        <p class="subhead">Shared Geometry Also Predicts Alignment Beyond Images and Text</p>
+      </header>
+      <p>We ran the same method with the same settings on fourteen pairs of modalities from seven fields. Each point in the plot is one pair of modalities, and the gray dots are the image and caption combinations from the previous chapter.</p>
+      <p class="note">Lower <button class="inline-term" data-open="foscttm">FOSCTTM</button> is better. The line is a least-squares fit, and the band is a bootstrap interval. <button class="inline-term" data-open="r2">R<sup>2</sup></button> = 0.69, <button class="inline-term" data-open="spearman">ρ</button> = &minus;0.82.</p>
+      <p class="inscription">The relation between <button class="inline-term" data-open="cka">CKA</button> and alignment quality also holds for these other pairs of modalities.</p>
+      <button type="button" class="continue" data-go="benchmarks">Continue with specialized methods</button>
+    </article>
+
+    <!-- ------------------------------------------------------------ specialized methods (paper Sec. 4.2, Fig. 4a) -->
+    <article data-chapter="benchmarks">
+      <header class="ch-head" data-grab>
+        <h2 class="carve">Comparison With Specialized Methods</h2>
+        <p class="subhead">Our Generic Method Matches or Beats Domain-Specific Aligners</p>
+      </header>
+      <p>On three benchmarks, methods were built specifically for the domain. We run the same method with the same settings and compare the mean <button class="inline-term" data-open="foscttm">FOSCTTM</button> over seeds.</p>
+      <div id="bench-plot" class="bench"></div>
+      <p class="note">Mean ± standard deviation over seeds. Lower is better, and the best value per benchmark is bold. NQ averages ten pairs of text encoders and NSD fMRI averages 56 pairs of subjects.</p>
+      <p class="inscription">Our generic method is competitive with mini-vec2vec on NQ, and it has a lower mean <button class="inline-term" data-open="foscttm">FOSCTTM</button> than SCOT+ on PBMC and than Platonic Brain on NSD fMRI.</p>
+      <div class="end-links">
+        <a href="https://arxiv.org/pdf/2610.09411" target="_blank" rel="noopener">Read the paper</a>
+        <a href="https://github.com/dominik-schnaus/unpaired-rosetta" target="_blank" rel="noopener">Get the code</a>
+        <button type="button" data-open="cite">Cite this work</button>
+      </div>
+    </article>
+  </div>
+</aside>
+
+<!-- ============================================================ DIALOGS -->
+<dialog id="dlg-foscttm" class="tablet">
+  <h3>FOSCTTM</h3>
+  <p>FOSCTTM stands for the fraction of samples closer than the true match. Take an image and its true caption. Count how many of the other captions are closer to the image than the true one, and divide by the number of captions. Averaged over all images, this gives one number between 0 and 1.</p>
+  <p>A value of 0 means the true caption is always the nearest. A value of 0.5 is what random guessing gives. We report it on the 40,504 pairs of the COCO validation set, which the method never sees during training.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-cka" class="tablet">
+  <h3>CKA</h3>
+  <p>Centered kernel alignment compares two embeddings of the same samples by the pairwise similarities within each space. It does not need the spaces to share dimensions or axes, and it does not change under orthogonal transformations or a uniform scaling of either space. We compute it on paired data only as an analysis tool. The method itself never uses pairs.</p>
+  <p>A value of 1 means both spaces arrange the samples in the same way, up to an orthogonal transformation and a scale. A value of 0 means the two arrangements are unrelated.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-gw" class="tablet">
+  <h3>Gromov-Wasserstein</h3>
+  <p>Gromov-Wasserstein matching compares two sets of points that lie in different spaces. It looks for a matching between the two sets under which the distances between points in one set agree as well as possible with the distances between the matched points in the other set.</p>
+  <p>Because it only compares distances within each set, it needs no shared coordinates. Our read-out takes one step of this optimization, which turns the coarse correspondence of the initialization into a one-to-one matching.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-procrustes" class="tablet">
+  <h3>Orthogonal Procrustes</h3>
+  <p>Orthogonal Procrustes finds the orthogonal map that moves one set of points closest to a matched second set, measured by the sum of squared distances. An orthogonal map keeps all distances and angles between points, so it can only rotate and reflect the space.</p>
+  <p>The best map has a closed-form solution from a singular value decomposition, so it is fast to compute.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-hungarian" class="tablet">
+  <h3>Hungarian matching</h3>
+  <p>The Hungarian algorithm finds the one-to-one matching between two sets with the highest total score, given a score for every pair. We use the similarity between the mapped images and the captions as the score, and we run the algorithm on random batches of samples.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-rae" class="tablet">
+  <h3>RAE diffusion model</h3>
+  <p>A representation autoencoder (RAE) uses the frozen DINOv2 B/14 image encoder as its encoder, and a decoder turns the encoder's features back into an image. A diffusion model generates images in this feature space.</p>
+  <p>We condition the diffusion model on the mean DINOv2 embedding of an image, and we train it on ImageNet images only, so it never sees a caption. A caption can therefore only change the generated image through our map.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-r2" class="tablet">
+  <h3>R²</h3>
+  <p>R², the coefficient of determination, is the share of the variation in FOSCTTM that a straight line in CKA explains. A value of 1 means that all points lie on the line, and a value of 0 means that the line explains none of the variation.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-spearman" class="tablet">
+  <h3>Spearman correlation</h3>
+  <p>The Spearman correlation ρ compares the ranks of two quantities instead of their values. It is 1 when a higher CKA always comes with a higher FOSCTTM, and it is &minus;1 when a higher CKA always comes with a lower FOSCTTM.</p>
+  <p>A value close to &minus;1 means that sorting the combinations by CKA almost sorts them by how well they align.</p>
+  <button class="btn" data-close>Close</button>
+</dialog>
+<dialog id="dlg-cite" class="tablet wide">
+  <h3>Paper, Code, and Citation</h3>
+  <nav class="links" aria-label="Paper and code">
+    <a class="btn" href="https://arxiv.org/pdf/2610.09411" target="_blank" rel="noopener">Paper</a>
+    <a class="btn" href="https://arxiv.org/abs/2610.09411" target="_blank" rel="noopener">arXiv</a>
+    <a class="btn" href="https://github.com/dominik-schnaus/unpaired-rosetta" target="_blank" rel="noopener">Code</a>
+  </nav>
+  <pre id="bibtex-text">@article{schnaus2026rosetta,
+  title   = {Shared Geometry as a Rosetta Stone: Cross-Modal Alignment Without Paired Data},
+  author  = {Schnaus, Dominik and Dag{\`e}s, Thomas and Cremers, Daniel and Wang, Xi and Isola, Phillip},
+  journal = {arXiv preprint arXiv:2610.09411},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2610.09411}
+}</pre>
+  <div class="row"><button class="btn" data-copy="bibtex-text">Copy BibTeX</button><button class="btn" data-close>Close</button></div>
+</dialog>
+</body>
+</html>
